@@ -3,10 +3,10 @@
 个人健身记录与训练趋势网站，包含量化趋势、饮食源表、睡眠与身体参数展示，以及力量训练记录。
 
 **在线演示：** [whatsup.bio](https://whatsup.bio)
+
+<img width="1469" height="920" alt="iShot_2026-11-02_17 36 21" src="https://github.com/user-attachments/assets/8e5f2148-596e-480b-9237-f2ceebec7613" />
 <img width="1469" height="921" alt="iShot_2026-11-02_17 36 44" src="https://github.com/user-attachments/assets/819facbe-c7a8-4fb0-bf45-067f141d97cf" />
 <img width="1469" height="921" alt="iShot_2026-11-02_17 36 33" src="https://github.com/user-attachments/assets/00ef196a-abb6-40c4-b771-699cedd6a894" />
-<img width="1469" height="920" alt="iShot_2026-11-02_17 36 21" src="https://github.com/user-attachments/assets/8e5f2148-596e-480b-9237-f2ceebec7613" />
-
 
 ## 数据说明
 
