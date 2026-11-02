@@ -1,0 +1,107 @@
+.series-list {
+  gap: 0;
+  border-top: 1px solid rgba(47, 88, 81, 0.16);
+}
+
+.series-item {
+  grid-template-columns: 8px minmax(0, 1fr) minmax(62px, auto);
+  gap: 8px;
+  min-height: 29px;
+  padding: 6px 2px;
+  border-bottom: 1px solid rgba(47, 88, 81, 0.16);
+  color: #617370;
+  font-size: 11px;
+}
+
+.series-change {
+  color: var(--muted);
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.series-values {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-self: end;
+  text-align: right;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.series-current-value {
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.series-change.is-positive { color: var(--warm); }
+.series-change.is-negative { color: #2f8b70; }
+.series-change.is-neutral { color: var(--muted); }
+.series-change.is-bodyweight {
+  color: #8a6f3d;
+  font-weight: 700;
+}
+
+.summary-values-hidden .series-values {
+  display: none;
+}
+
+.summary-average {
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.summary-average .series-average-mark {
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.summary-average-sleep {
+  border: 1px solid rgba(57, 116, 230, 0.24);
+  background: rgba(57, 116, 230, 0.08);
+}
+
+.summary-average-sleep .series-average-mark {
+  color: #3974e6;
+}
+
+.summary-average-heart {
+  border: 1px solid rgba(112, 143, 130, 0.28);
+  border-radius: 4px;
+  background: rgba(112, 143, 130, 0.09);
+}
+
+.summary-average-heart .series-average-mark {
+  color: #587768;
+}
+
+.summary-average-desire {
+  border: 1px solid rgba(177, 132, 136, 0.28);
+  border-radius: 4px;
+  background: rgba(177, 132, 136, 0.09);
+}
+
+.summary-average-desire .series-average-mark {
+  color: #9b6e75;
+}
+
+.training-action-list .series-item {
+  grid-template-columns: 8px minmax(0, 1fr) minmax(66px, auto);
+}
+
+.training-action-list .series-change.is-positive {
+  color: #c94742;
+}
+
+.training-action-list .series-change.is-negative {
+  color: #2f8b70;
+}
+
+.training-action-list .series-change.is-neutral {
+  color: var(--muted);
+}

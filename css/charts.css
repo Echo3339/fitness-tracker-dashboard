@@ -1,0 +1,228 @@
+.chart-panel {
+  overflow: visible;
+  background-color: #fbfdfa;
+  background-image: none;
+  isolation: isolate;
+}
+
+.section-row:nth-child(odd) .chart-panel {
+  background-color: #fbfcfb;
+}
+
+.sleep-chart-panel {
+  background-image: none;
+}
+
+.training-chart-panel {
+  background-image: none;
+}
+
+.training-combined-row {
+  min-height: var(--focus-row-height);
+  scroll-snap-align: none;
+}
+
+.training-combined-panel {
+  height: 100% !important;
+  background-image: none;
+}
+
+.training-combined-panel svg {
+  height: 100%;
+}
+
+.desire-chart-panel {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  background-image: none;
+}
+
+.desire-chart-panel svg {
+  position: relative;
+  z-index: 0;
+  height: 104px;
+  background: transparent;
+}
+
+.desire-chart-panel svg[data-density="minimal"] .desire-period-value {
+  display: none;
+}
+
+.desire-timeline-hit-area {
+  fill: transparent;
+  stroke: none;
+  cursor: crosshair;
+  pointer-events: all;
+}
+
+.desire-week-selection {
+  pointer-events: none;
+}
+
+.show-points-mode .series-path {
+  display: none !important;
+}
+
+.show-points-mode .desire-period-line {
+  display: none !important;
+}
+
+.desire-period-value {
+  fill: #52646a;
+  font-size: 11px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.desire-period-bar {
+  fill: #d5aeb9;
+}
+
+.desire-period-bar.is-zero {
+  fill: #eadde1;
+}
+
+.desire-period-line {
+  fill: none;
+  stroke: #ad7e8c;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.desire-period-line {
+  pointer-events: none;
+}
+
+.desire-period-point {
+  fill: #ad7e8c;
+  stroke: #fff;
+  stroke-width: 1.5;
+}
+
+.desire-week-selection {
+  fill: rgba(112, 126, 132, 0.08);
+  stroke: rgba(112, 126, 132, 0.3);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+.desire-period-divider {
+  stroke: rgba(104, 133, 122, 0.24);
+  stroke-width: 1;
+}
+
+.desire-boundary-line,
+.desire-value-rule {
+  stroke: rgba(104, 133, 122, 0.3);
+  stroke-width: 1;
+}
+
+.desire-value-rule {
+  stroke: rgba(104, 133, 122, 0.18);
+  stroke-dasharray: 2 4;
+}
+
+.expanded-chart-row {
+  min-height: var(--focus-row-height);
+  scroll-snap-align: none;
+}
+
+.expanded-chart-panel {
+  height: 100% !important;
+  background-image: none;
+}
+
+.expanded-chart-panel svg {
+  height: 100%;
+}
+
+.training-action-list {
+  gap: 0;
+}
+
+.training-action-list .series-item {
+  grid-template-columns: 8px minmax(0, 1fr) minmax(72px, auto);
+}
+
+.training-action-list .series-name {
+  overflow: visible;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.line-value-label,
+.training-value-label,
+.bar-value-label {
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+  paint-order: stroke;
+  stroke: #f9fbfa;
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.data-bar {
+  opacity: 0.88;
+}
+
+.data-bar:hover {
+  opacity: 1;
+  filter: brightness(0.92);
+}
+
+.axis-line {
+  stroke: rgba(151, 179, 169, 0.38);
+  stroke-width: 1;
+}
+
+.axis-spine {
+  stroke: rgba(109, 143, 132, 0.72);
+  stroke-width: 1.15;
+  pointer-events: none;
+}
+
+.axis-label,
+.sleep-axis-label,
+.training-axis-label {
+  fill: #59676d;
+  font-weight: 650;
+}
+
+.phase-divider {
+  stroke: rgba(111, 145, 133, 0.48);
+  stroke-width: 0.9;
+  stroke-dasharray: 2 4;
+}
+
+.week-divider {
+  stroke: rgba(112, 126, 132, 0.18);
+  stroke-width: 1;
+}
+
+:root[data-grid-density="weekly"] .date-cell {
+  border-right-color: transparent;
+}
+
+:root[data-grid-density="phase"] .week-divider {
+  opacity: 0;
+}
+
+:root[data-grid-density="phase"] .date-cell,
+:root[data-grid-density="phase"] .week-cell {
+  border-right-color: transparent;
+}
+
+:root[data-grid-density="none"] .phase-divider,
+:root[data-grid-density="none"] .week-divider {
+  opacity: 0;
+}
+
+:root[data-grid-density="none"] .date-cell,
+:root[data-grid-density="none"] .week-cell,
+:root[data-grid-density="none"] .month-cell {
+  border-right-color: transparent;
+}

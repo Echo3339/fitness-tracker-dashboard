@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>健身计划</title>
+    <link rel="stylesheet" href="/excel-preview/source-preview.css?v=3.0.16-20261029T125743519Z-9edf981cb254" />
+    <style>
+      :root {
+        color-scheme: light;
+        --line: #dfe3e8;
+        --text: #27313b;
+        --muted: #6d7782;
+        --accent: #2f855a;
+        --bottom-bar-height: 44px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        overflow: hidden;
+        background: #fff;
+        color: var(--text);
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Microsoft YaHei", sans-serif;
+      }
+
+      .app {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .sheet-view {
+        position: absolute;
+        inset: 0 0 var(--bottom-bar-height);
+        overflow: scroll;
+        background: #fff;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        touch-action: none;
+        cursor: grab;
+      }
+
+      .sheet-document {
+        display: block;
+        width: fit-content;
+        min-width: 100%;
+        min-height: 100%;
+      }
+
+      .sheet-document[hidden] {
+        display: none;
+      }
+
+      .sheet-document table {
+        width: auto;
+        min-width: 0;
+        margin: 0;
+        border-collapse: collapse;
+        border-spacing: 0;
+        table-layout: fixed;
+        font-family:
+          "Heiti SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+
+      .sheet-document td,
+      .sheet-document th {
+        box-sizing: border-box;
+      }
+
+      .sheet-document td[data-freeze-sticky="true"] {
+        position: sticky;
+      }
+
+      .bottom-bar {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 4;
+        display: flex;
+        align-items: stretch;
+        height: var(--bottom-bar-height);
+        padding-left: 14px;
+        border-top: 1px solid var(--line);
+        background: #f8fafb;
+      }
+
+      .tab {
+        position: relative;
+        min-width: 108px;
+        padding: 0 18px;
+        border: 0;
+        border-right: 1px solid var(--line);
+        background: transparent;
+        color: var(--muted);
+        font: inherit;
+        font-size: 14px;
+        cursor: pointer;
+      }
+
+      .tab:first-child {
+        border-left: 1px solid var(--line);
+      }
+
+      .tab:hover {
+        background: #eef3f0;
+        color: var(--text);
+      }
+
+      .tab[aria-selected="true"] {
+        background: #fff;
+        color: var(--text);
+        font-weight: 600;
+      }
+
+      .tab[aria-selected="true"]::after {
+        position: absolute;
+        right: 14px;
+        bottom: 0;
+        left: 14px;
+        height: 3px;
+        background: var(--accent);
+        content: "";
+      }
+
+      .status {
+        position: fixed;
+        top: 12px;
+        right: 16px;
+        z-index: 5;
+        max-width: min(460px, calc(100vw - 32px));
+        padding: 8px 11px;
+        border: 1px solid #e7c6c6;
+        background: #fff8f8;
+        color: #9c3333;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .status[hidden] {
+        display: none;
+      }
+
+      @media (max-width: 640px) {
+        .tab {
+          min-width: 96px;
+          padding: 0 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app" aria-label="健身计划">
+      <section class="sheet-view" aria-label="量化">
+        <div id="quant-document" class="sheet-document" data-sheet-document="量化"></div>
+        <div id="diet-document" class="sheet-document" data-sheet-document="饮食记录" hidden></div>
+      </section>
+
+      <nav class="bottom-bar" aria-label="工作表">
+        <button class="tab" type="button" data-sheet="量化" aria-selected="true">量化</button>
+        <button class="tab" type="button" data-sheet="饮食记录" aria-selected="false">饮食记录</button>
+      </nav>
+
+      <div id="status" class="status" role="status" aria-live="polite" hidden></div>
+    </main>
+
+    <script>
+      const runtimeOrigin = "http://127.0.0.1:8766";
+      const sheetView = document.querySelector(".sheet-view");
+      const quantDocument = document.querySelector("#quant-document");
+      const dietDocument = document.querySelector("#diet-document");
+      const tabs = [...document.querySelectorAll(".tab")];
+      const status = document.querySelector("#status");
+      let activeSheet = "量化";
+      let loadedVersion = "";
+      let panState = null;
+
+      const setStatus = (message) => {
+        status.textContent = message;
+        status.hidden = !message;
+      };
+
+      const resetScroll = () => {
+        sheetView.scrollLeft = 0;
+        sheetView.scrollTop = 0;
+      };
+
+      const preserveColumnWidths = (container) => {
+        container.querySelectorAll("table").forEach((table) => {
+          const width = [...table.querySelectorAll("col")].reduce(
+            (total, column) => total + Number.parseFloat(column.style.width || 0),
+            0,
+          );
+          if (width > 0) table.style.width = `${width}px`;
+        });
+      };
+
+      const applyFreezePanes = (container) => {
+        container.querySelectorAll("table").forEach((table) => {
+          const frozenColumns = Number.parseInt(table.dataset.freezeCols || "0", 10);
+          const frozenRows = Number.parseInt(table.dataset.freezeRows || "0", 10);
+          if (!frozenColumns && !frozenRows) return;
+
+          const rows = [...table.rows];
+          const columns = [...table.querySelectorAll("col")];
+          const rowOffsets = [0];
+          rows.forEach((row) => rowOffsets.push(rowOffsets.at(-1) + row.getBoundingClientRect().height));
+          const columnOffsets = [0];
+          columns.forEach((column) => columnOffsets.push(columnOffsets.at(-1) + column.getBoundingClientRect().width));
+
+          table.querySelectorAll("td[data-grid-row]").forEach((cell) => {
+            delete cell.dataset.freezeEdgeRight;
+            delete cell.dataset.freezeEdgeBottom;
+            cell.style.removeProperty("--freeze-edge-right-width");
+            cell.style.removeProperty("--freeze-edge-right-style");
+            cell.style.removeProperty("--freeze-edge-right-color");
+            cell.style.removeProperty("--freeze-edge-bottom-width");
+            cell.style.removeProperty("--freeze-edge-bottom-style");
+            cell.style.removeProperty("--freeze-edge-bottom-color");
+            const row = Number.parseInt(cell.dataset.gridRow || "0", 10);
+            const column = Number.parseInt(cell.dataset.gridCol || "0", 10);
+            const rowSpan = Number.parseInt(cell.dataset.gridRowspan || "1", 10);
+            const columnSpan = Number.parseInt(cell.dataset.gridColspan || "1", 10);
+            const freezesTop = row <= frozenRows;
+            const freezesLeft = column <= frozenColumns;
+            if (!freezesTop && !freezesLeft) return;
+
+            cell.dataset.freezeSticky = "true";
+            if (freezesTop) cell.style.top = `${rowOffsets[row - 1] || 0}px`;
+            if (freezesLeft) cell.style.left = `${columnOffsets[column - 1] || 0}px`;
+            cell.style.zIndex = String((freezesTop ? 20 : 10) + (freezesLeft ? 2 : 0));
+            const computed = getComputedStyle(cell);
+            if (freezesLeft && column + columnSpan - 1 === frozenColumns && computed.borderRightStyle !== "none") {
+              cell.dataset.freezeEdgeRight = "true";
+              cell.style.setProperty("--freeze-edge-right-width", computed.borderRightWidth);
+              cell.style.setProperty("--freeze-edge-right-style", computed.borderRightStyle);
+              cell.style.setProperty("--freeze-edge-right-color", computed.borderRightColor);
+            }
+            if (freezesTop && row + rowSpan - 1 === frozenRows && computed.borderBottomStyle !== "none") {
+              cell.dataset.freezeEdgeBottom = "true";
+              cell.style.setProperty("--freeze-edge-bottom-width", computed.borderBottomWidth);
+              cell.style.setProperty("--freeze-edge-bottom-style", computed.borderBottomStyle);
+              cell.style.setProperty("--freeze-edge-bottom-color", computed.borderBottomColor);
+            }
+            if (computed.backgroundColor === "rgba(0, 0, 0, 0)") {
+              cell.style.backgroundColor = "#fff";
+            }
+            cell.dataset.freezeExtent = `${rowSpan}:${columnSpan}`;
+          });
+        });
+      };
+
+      const setTab = (name, reset = true) => {
+        activeSheet = name;
+        tabs.forEach((tab) => {
+          tab.setAttribute("aria-selected", String(tab.dataset.sheet === name));
+        });
+        quantDocument.hidden = name !== "量化";
+        dietDocument.hidden = name !== "饮食记录";
+        sheetView.setAttribute("aria-label", name);
+        requestAnimationFrame(() => applyFreezePanes(name === "量化" ? quantDocument : dietDocument));
+        if (reset) resetScroll();
+      };
+
+      const fetchSheet = async (name, version) => {
+        const response = await fetch(
+          `${runtimeOrigin}/sheets/${encodeURIComponent(name)}.html?v=${encodeURIComponent(version)}`,
+          { cache: "no-store" },
+        );
+        if (!response.ok) throw new Error(`表格加载失败（${response.status}）`);
+        return response.text();
+      };
+
+      const loadSheets = async (version) => {
+        const scrollLeft = sheetView.scrollLeft;
+        const scrollTop = sheetView.scrollTop;
+        const [quantHtml, dietHtml] = await Promise.all([
+          fetchSheet("量化", version),
+          fetchSheet("饮食记录", version),
+        ]);
+        quantDocument.innerHTML = quantHtml;
+        dietDocument.innerHTML = dietHtml;
+        preserveColumnWidths(quantDocument);
+        preserveColumnWidths(dietDocument);
+        applyFreezePanes(quantDocument);
+        applyFreezePanes(dietDocument);
+        loadedVersion = version;
+        setStatus("");
+        setTab(activeSheet, false);
+        sheetView.scrollLeft = scrollLeft;
+        sheetView.scrollTop = scrollTop;
+      };
+
+      const checkForUpdate = async () => {
+        try {
+          const response = await fetch(`${runtimeOrigin}/version`, { cache: "no-store" });
+          if (!response.ok) throw new Error("实时服务未响应");
+          const data = await response.json();
+          if (data.error) throw new Error(data.error);
+          if (!loadedVersion || data.version !== loadedVersion) await loadSheets(data.version);
+        } catch (error) {
+          setStatus(`无法连接实时预览服务：${error.message}`);
+        }
+      };
+
+      tabs.forEach((tab) => tab.addEventListener("click", () => setTab(tab.dataset.sheet)));
+
+      const stopPanning = (event) => {
+        if (!panState || (event && event.pointerId !== panState.pointerId)) return;
+        if (event && sheetView.hasPointerCapture(event.pointerId)) {
+          sheetView.releasePointerCapture(event.pointerId);
+        }
+        panState = null;
+        sheetView.classList.remove("is-panning");
+      };
+
+      sheetView.addEventListener("pointerdown", (event) => {
+        if (event.button !== 0 || event.target.closest("a, button, input, select, textarea")) return;
+        panState = {
+          pointerId: event.pointerId,
+          startX: event.clientX,
+          startY: event.clientY,
+          scrollLeft: sheetView.scrollLeft,
+          scrollTop: sheetView.scrollTop,
+        };
+        sheetView.setPointerCapture(event.pointerId);
+        sheetView.classList.add("is-panning");
+        event.preventDefault();
+      });
+
+      const movePanning = (event) => {
+        if (!panState || event.pointerId !== panState.pointerId) return;
+        sheetView.scrollLeft = panState.scrollLeft - (event.clientX - panState.startX);
+        sheetView.scrollTop = panState.scrollTop - (event.clientY - panState.startY);
+        event.preventDefault();
+      };
+
+      window.addEventListener("pointermove", movePanning, { passive: false });
+      window.addEventListener("pointerup", stopPanning);
+      window.addEventListener("pointercancel", stopPanning);
+      sheetView.addEventListener("lostpointercapture", stopPanning);
+      window.addEventListener("resize", () => applyFreezePanes(activeSheet === "量化" ? quantDocument : dietDocument));
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "1") setTab("量化");
+        if (event.key === "2") setTab("饮食记录");
+      });
+
+      if (location.protocol === "file:") {
+        location.replace(`${runtimeOrigin}/index.html`);
+      } else {
+        setTab(activeSheet);
+        checkForUpdate();
+        window.setInterval(checkForUpdate, 1200);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,168 @@
+@media (max-width: 360px) {
+  :root {
+    --label-width: 100px;
+  }
+
+  .brand-title-text {
+    max-width: min(190px, 51vw);
+    font-size: 20px;
+  }
+
+  .brand-block {
+    gap: 4px;
+  }
+
+  .brand-block .data-summary {
+    font-size: 11px;
+  }
+
+  .language-button {
+    min-width: 27px;
+    padding-inline: 5px;
+  }
+
+  .topbar-controls {
+    gap: 4px;
+  }
+
+  .source-view-header {
+    min-height: 48px;
+    padding-inline: 10px;
+  }
+
+  .topbar-controls .check-control label {
+    flex-basis: 31px;
+    width: 31px;
+    min-width: 31px;
+  }
+
+  .topbar-controls .range-button {
+    min-width: 28px;
+    padding-inline: 4px;
+  }
+
+  .page-header {
+    column-gap: 5px;
+  }
+
+  .date-range-button {
+    padding-inline: 6px;
+  }
+}
+
+:root {
+  --paper: #fff;
+  --panel: #fff;
+  --line: #e2e5e7;
+  --line-strong: #c9ced1;
+  --teal: #5b686e;
+  --teal-dark: #46545a;
+}
+
+.app-shell,
+.page-header,
+.control-bar,
+.sheet-viewport {
+  background: #fff;
+}
+
+.page-header,
+.control-bar {
+  border-color: #e2e5e7;
+}
+
+.range-button.is-active,
+.date-range-button:hover,
+.date-range-button:focus-visible {
+  color: #46545a;
+  background: #f3f4f4;
+}
+
+.date-range-button {
+  border-color: #fff;
+  background: #fff;
+  box-shadow: 0 8px 22px rgba(35, 52, 49, 0.08);
+}
+
+.sheet-corner,
+.section-row .label-panel {
+  border-right: 0;
+}
+
+.timeline-header::before {
+  border-right-color: var(--line-strong);
+}
+
+.page-header > .topbar-controls > .range-control {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  margin: 0;
+  padding: 0;
+}
+
+.page-header > .topbar-controls > .range-control > .range-switch {
+  box-sizing: border-box;
+  display: inline-grid;
+  height: 38px;
+  min-height: 38px;
+  align-items: center;
+  align-self: center;
+  margin: 0;
+  padding: 3px;
+}
+
+.page-header > .topbar-controls > .range-control > .range-switch > .range-button,
+.page-header > .topbar-controls > .range-control > .range-switch > .range-button.is-active {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  height: 30px;
+  min-height: 30px;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+
+.page-header > .topbar-controls > .range-control > .range-switch > .range-button.is-active {
+  border-radius: 50%;
+}
+
+@media (max-width: 700px) {
+  .page-header > .topbar-controls > .range-control > .range-switch {
+    height: 36px;
+    min-height: 36px;
+  }
+
+  .page-header > .topbar-controls > .range-control > .range-switch > .range-button,
+  .page-header > .topbar-controls > .range-control > .range-switch > .range-button.is-active {
+    width: 26px;
+    height: 26px;
+    min-height: 26px;
+  }
+}
+
+@media (max-width: 700px) {
+  .page-header {
+    padding-bottom: 0;
+  }
+
+  .page-header > .topbar-controls {
+    padding: 0 !important;
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+}
+
+.section-row .label-panel {
+  position: sticky;
+  left: 0;
+  z-index: 30;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 1px 0 0 rgba(201, 206, 209, 0.7);
+}
+
+.section-row:nth-child(odd) .label-panel {
+  background: rgba(255, 255, 255, 0.98);
+}

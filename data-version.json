@@ -1,0 +1,20 @@
+{
+  "version": "2026-11-02-c58effd1e4a6412340b67577dc43c01f",
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-02T05:31:32.227790Z",
+  "generator": {
+    "fingerprint": "70d5f43eff796742d7ab7d150a1cbf6f210a38ac82c9f3f066ba60fe1976db32",
+    "openpyxlVersion": "3.1.2"
+  },
+  "source": {
+    "workbook": "健身计划.xlsx",
+    "modifiedAt": "2026-11-02T05:26:24Z",
+    "sha256": "58603b5e2cc7ec26b7486511efef980351a297a5202e62ecab07947115147a06"
+  },
+  "artifacts": {
+    "dataSha256": "0e3f07df334e8b595cf96ce89e874011d5f31ff8692e7b2f1a41f1855a1cf25e",
+    "quantificationSha256": "a075531b245b9074efbca9abb4bba0eb5c5aa5bbd04476a18f71ac75292cf4b4",
+    "dietSha256": "8471fa8e8d8c764f4abac4603c17ba42cf889839db232461ef22455ae8ddb9fa",
+    "workbookSha256": "58603b5e2cc7ec26b7486511efef980351a297a5202e62ecab07947115147a06"
+  }
+}

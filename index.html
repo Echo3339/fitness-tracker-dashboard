@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>量化·力量训练</title>
+    <link rel="stylesheet" href="/styles.css?v=3.0.16-20261029T125743519Z-9edf981cb254" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/force-mark-tab.png?v=3.0.16-20261029T125743519Z-9edf981cb254" />
+    <link rel="apple-touch-icon" type="image/png" sizes="64x64" href="/force-mark-tab.png?v=3.0.16-20261029T125743519Z-9edf981cb254" />
+  </head>
+  <body>
+    <main class="app-shell" data-app-ready="false">
+      <header class="page-header">
+        <div class="brand-block">
+          <h1>
+            <img src="/title-calligraphy.png?v=3.0.16-20261029T125743519Z-9edf981cb254" alt="量化·力量训练" />
+            <span class="brand-title-text">Data Records</span>
+          </h1>
+          <div class="data-summary" id="dataSummary">--</div>
+        </div>
+        <nav class="site-navigation" aria-label="页面入口">
+          <button class="site-nav-button is-active" type="button" data-site-entry="overview" data-i18n="siteOverview">总览</button>
+          <button class="site-nav-button" type="button" data-site-entry="strength" data-i18n="siteTraining">力训</button>
+          <button class="site-nav-button" type="button" data-site-entry="quantification" data-i18n="siteMetrics">量化</button>
+          <button class="site-nav-button" type="button" data-site-entry="diet" data-i18n="siteDiet">饮食</button>
+        </nav>
+        <a class="source-download-button" href="/健身计划.xlsx" download="健身计划.xlsx" title="下载健身计划 Excel" aria-label="下载健身计划 Excel"><span aria-hidden="true">↓</span>&nbsp;Excel</a>
+        <nav class="strength-header-navigation" id="strengthFilterNavigation" aria-label="动作筛选" hidden>
+          <button class="strength-filter-button is-active" type="button" data-strength-filter="all" aria-pressed="true">全部</button>
+          <button class="strength-filter-button" type="button" data-strength-filter="深蹲" aria-pressed="false">深蹲</button>
+          <button class="strength-filter-button" type="button" data-strength-filter="卧推" aria-pressed="false">卧推</button>
+          <button class="strength-filter-button" type="button" data-strength-filter="硬拉" aria-pressed="false">硬拉</button>
+          <button class="strength-filter-button" type="button" data-strength-filter="推举" aria-pressed="false">推举</button>
+          <button class="strength-filter-button" type="button" data-strength-filter="高翻" aria-pressed="false">高翻</button>
+          <button class="strength-filter-button" type="button" data-strength-filter="自重反手引体向上" aria-pressed="false">自重反手</button>
+          <button class="strength-filter-button" type="button" data-strength-filter="负重反手引体向上" aria-pressed="false">负重反手</button>
+        </nav>
+        <div class="control-bar topbar-controls" aria-label="图表筛选">
+          <div class="control-group check-control" aria-label="显示选项">
+            <label title="显示节点">
+              <input type="checkbox" id="showPoints" aria-label="显示节点" />
+              <span data-i18n="pointsShort">点</span>
+            </label>
+            <label title="显示全部值">
+              <input type="checkbox" id="showAllValues" aria-label="显示全部值" />
+              <span data-i18n="valuesShort">值</span>
+            </label>
+          </div>
+          <div class="control-group zoom-control">
+            <input id="timelineZoom" type="range" min="1" max="100" step="any" value="100" aria-label="缩放" />
+            <output id="timelineZoomValue" for="timelineZoom">100%</output>
+          </div>
+          <div class="control-group range-control">
+            <div class="range-switch" id="dateRangeFilter" role="group" aria-label="日期范围">
+              <button type="button" class="range-button is-active" data-range="day" aria-pressed="true" data-i18n="day">日</button>
+              <button type="button" class="range-button" data-range="week" aria-pressed="false" data-i18n="week">周</button>
+              <button type="button" class="range-button" data-range="month" aria-pressed="false" data-i18n="month">月</button>
+            </div>
+          </div>
+        </div>
+        <button class="date-range-button" id="dateRange" type="button" title="定位到当前日期" aria-label="定位到当前日期">--</button>
+        <div class="language-switch" id="languageSwitch" role="group" aria-label="Language">
+          <button type="button" class="language-button" data-language="en" aria-pressed="false">EN</button>
+          <button type="button" class="language-button is-active" data-language="zh" aria-pressed="true">中</button>
+        </div>
+      </header>
+
+      <section class="sheet-viewport" id="sheetViewport" aria-label="量化趋势时间轴">
+        <div class="sheet-grid" id="sheetGrid">
+          <aside class="sheet-sidebar" id="sheetSidebar">
+            <div class="sheet-corner">
+              <strong id="metricCorner">指标</strong>
+            </div>
+            <div class="sidebar-body" id="sidebarBody"></div>
+          </aside>
+          <div class="timeline-content" id="timelineContent">
+            <div class="timeline-header" id="timelineHeader">
+              <div class="phase-track" id="phaseTrack"></div>
+              <div class="month-track" id="monthTrack"></div>
+              <div class="week-track" id="weekTrack"></div>
+              <div class="date-track" id="dateTrack"></div>
+            </div>
+            <div class="sheet-body" id="sheetBody"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="source-view" id="sourceDataView" aria-label="源数据" hidden>
+        <div class="source-sheet-viewport" id="sourceSheetViewport">
+          <div id="sourceQuantificationDocument" class="source-sheet-document" data-source-document="量化"></div>
+          <div id="sourceDietDocument" class="source-sheet-document" data-source-document="饮食记录" hidden></div>
+        </div>
+      </section>
+
+      <section class="training-embedded-view" id="trainingEmbeddedView" aria-label="力训" hidden>
+        <iframe id="trainingFrame" title="力训" loading="eager"></iframe>
+      </section>
+
+      <script>
+        (() => {
+          const path = window.location.pathname.replace(/\/+$/, "") || "/";
+          const sheet = path === "/source-data/diet" ? "diet"
+            : path === "/source-data/metrics" ? "quantification"
+            : null;
+          if (!sheet) return;
+          document.querySelector(".app-shell")?.classList.add("is-source-mode");
+          document.getElementById("sheetViewport").hidden = true;
+          document.getElementById("sourceDataView").hidden = false;
+          document.querySelectorAll("[data-site-entry]").forEach((button) => {
+            button.classList.toggle("is-active", button.dataset.siteEntry === sheet);
+          });
+        })();
+      </script>
+
+    </main>
+    <div class="tooltip" id="tooltip" role="status" aria-live="polite"></div>
+    <div class="status-message" id="dataLoadStatus" data-state="loading" role="status" aria-live="polite">正在加载数据…</div>
+    <script>
+      (() => {
+        try {
+          const cached = JSON.parse(sessionStorage.getItem("whatsup.bio.visible-days.v1") || "null");
+          const today = new Date();
+          const todayKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+          if (cached && cached.date === todayKey && Number.isFinite(cached.count) && cached.count > 0) {
+            const summary = document.getElementById("dataSummary");
+            if (summary) summary.textContent = document.documentElement.dataset.lang === "zh"
+              ? `${cached.count}天`
+              : `${cached.count} days`;
+          }
+        } catch (error) {
+          console.warn("[fitness-summary] cache read failed", error);
+        }
+      })();
+    </script>
+    <script>
+      (() => {
+        const dataUrl = "/data.json";
+        const versionUrl = "/data-version.json";
+        const status = document.getElementById("dataLoadStatus");
+        let currentVersion = "";
+        let checking = false;
+          const dataCacheKey = "whatsup.bio.fitness-data.v5";
+
+        const setStatus = (message) => {
+          status.textContent = message;
+          status.dataset.state = message.includes("失败") || message.includes("failed") ? "error" : "loading";
+          status.hidden = !message;
+        };
+
+        const readJson = async (url, options = {}) => {
+          const response = await fetch(url, options);
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          return response.json();
+        };
+
+        const readCachedData = (version) => {
+          try {
+            const cached = JSON.parse(sessionStorage.getItem(dataCacheKey) || "null");
+            if (cached?.version === version && cached.data) return cached.data;
+          } catch (error) {
+            console.warn("[fitness-data] cache read failed", error);
+          }
+          return null;
+        };
+
+        const writeCachedData = (version, data) => {
+          try {
+            sessionStorage.setItem(dataCacheKey, JSON.stringify({
+              version,
+              data,
+              cachedAt: Date.now(),
+            }));
+          } catch (error) {
+            console.warn("[fitness-data] cache write failed", error);
+          }
+        };
+
+        const loadApp = async () => {
+          const versionInfo = await readJson(`${versionUrl}?ts=${Date.now()}`, { cache: "no-store" });
+          currentVersion = versionInfo.version || "";
+          window.fitnessData = readCachedData(currentVersion);
+          if (!window.fitnessData) {
+            window.fitnessData = await readJson(`${dataUrl}?v=${encodeURIComponent(currentVersion || "live")}`, {
+              cache: "force-cache",
+            });
+            writeCachedData(currentVersion, window.fitnessData);
+          }
+          window.fitnessDataVersion = currentVersion;
+
+          await new Promise((resolve, reject) => {
+            const script = document.createElement("script");
+            script.src = `/app.bundle.js?v=${encodeURIComponent(currentVersion || "live")}&build=3.0.16-20261029T125743519Z-9edf981cb254`;
+            script.onload = resolve;
+            script.onerror = () => reject(new Error(document.documentElement.dataset.lang === "zh" ? "应用脚本加载失败" : "Application script failed to load"));
+            document.body.append(script);
+          });
+          setStatus("");
+        };
+
+        const checkForUpdate = async () => {
+          if (checking || !currentVersion) return;
+          checking = true;
+          try {
+            const next = await readJson(`${versionUrl}?ts=${Date.now()}`, { cache: "no-store" });
+            if (next.version && next.version !== currentVersion) {
+              const nextData = await readJson(`${dataUrl}?v=${encodeURIComponent(next.version)}`, {
+                cache: "no-store",
+              });
+              currentVersion = next.version;
+              window.fitnessDataVersion = currentVersion;
+              writeCachedData(currentVersion, nextData);
+              if (typeof window.applyFitnessDataUpdate === "function") {
+                await window.applyFitnessDataUpdate({ data: nextData, version: currentVersion });
+              } else {
+                window.location.reload();
+              }
+              return;
+            }
+          } catch (error) {
+            console.warn("[fitness-data] version check failed", error);
+          } finally {
+            checking = false;
+          }
+        };
+
+        loadApp()
+          .then(() => window.setInterval(checkForUpdate, 5000))
+          .catch((error) => {
+            console.error("[fitness-data] load failed", error);
+            document.querySelector(".app-shell")?.setAttribute("data-app-ready", "true");
+            setStatus(document.documentElement.dataset.lang === "zh" ? "数据加载失败，请稍后刷新" : "Data failed to load. Please refresh later.");
+          });
+      })();
+    </script>
+  </body>
+</html>

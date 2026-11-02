@@ -1,0 +1,65 @@
+.sheet-view,
+.sheet-view * {
+  cursor: grab !important;
+}
+
+.sheet-view {
+  scrollbar-color: #93aaa3 #e3ebe8;
+  scrollbar-width: thin;
+}
+
+.sheet-view::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+.sheet-view::-webkit-scrollbar-track {
+  border-radius: 0;
+  background: #e3ebe8;
+  box-shadow: inset 1px 0 0 rgba(76, 100, 94, 0.15), inset -1px 0 0 rgba(255, 255, 255, 0.75), inset 0 0 5px rgba(41, 60, 56, 0.16);
+}
+
+.sheet-view::-webkit-scrollbar-thumb {
+  min-width: 12px;
+  min-height: 12px;
+  border: 2px solid #e3ebe8;
+  border-radius: 3px;
+  background: #93aaa3;
+  box-shadow: inset 0 0 0 1px rgba(50, 80, 73, 0.16);
+}
+
+.sheet-view.is-panning,
+.sheet-view.is-panning * {
+  cursor: grabbing !important;
+  user-select: none;
+}
+
+.tab,
+.tab * {
+  cursor: pointer !important;
+}
+
+.sheet-document td[data-freeze-sticky="true"] {
+  background-clip: padding-box;
+  background-origin: border-box;
+}
+
+.sheet-document td[data-freeze-edge-right="true"]::after {
+  position: absolute;
+  top: -1px;
+  right: 0;
+  bottom: -1px;
+  border-right: var(--freeze-edge-right-width) var(--freeze-edge-right-style) var(--freeze-edge-right-color);
+  content: "";
+  pointer-events: none;
+}
+
+.sheet-document td[data-freeze-edge-bottom="true"]::before {
+  position: absolute;
+  right: -1px;
+  bottom: 0;
+  left: -1px;
+  border-bottom: var(--freeze-edge-bottom-width) var(--freeze-edge-bottom-style) var(--freeze-edge-bottom-color);
+  content: "";
+  pointer-events: none;
+}

@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-strength-lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1 / 3 / 5 力量训练正式组 - 学术三线表与负荷趋势分析</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script async src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Editorial Serif, Clean Mono & Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Noto+Serif+SC:wght@600;700;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <script>
+    if (new URLSearchParams(window.location.search).get("embedded") === "1") {
+      document.documentElement.classList.add("is-embedded-strength");
+    }
+  </script>
+
+  <style>
+    :root {
+      /* Theme Color Tokens - Light Mode */
+      --bg-page: #f4f6f5;
+      --bg-card: #ffffff;
+      --bg-subtle: #eaf0ec;
+      --bg-hover: #e0e9e4;
+
+      --text-main: #12211e;
+      --text-muted: #526661;
+      --text-light: #809690;
+
+      --brand-primary: #0f5448;
+      --brand-primary-hover: #0a3d34;
+      --brand-light: #e1efea;
+      --brand-accent: #c85a1b;
+
+      --rule-thick: #0f2420;
+      --rule-thin: #7a948e;
+      --border-subtle: #d8e3df;
+
+      /* Specific Movement Color Badges */
+      --color-squat: #53675e;
+      --bg-squat: #e4e9e3;
+      --color-bench: #566775;
+      --bg-bench: #e3e8eb;
+      --color-deadlift: #76665d;
+      --bg-deadlift: #ece6e1;
+      --color-press: #706779;
+      --bg-press: #e9e5eb;
+      --color-clean: #69705d;
+      --bg-clean: #e8e9e1;
+
+      --font-serif: 'Noto Serif SC', 'Times New Roman', serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+      --shadow-soft: 0 12px 32px -6px rgba(15, 36, 32, 0.05), 0 4px 12px -2px rgba(15, 36, 32, 0.03);
+    }
+
+    [data-theme="dark"] {
+      --bg-page: #0a1210;
+      --bg-card: #121e1c;
+      --bg-subtle: #192a27;
+      --bg-hover: #213834;
+
+      --text-main: #e6f0ed;
+      --text-muted: #8ea59f;
+      --text-light: #57706a;
+
+      --brand-primary: #2bc4a9;
+      --brand-primary-hover: #3ad1b6;
+      --brand-light: #14332d;
+      --brand-accent: #ef7838;
+
+      --rule-thick: #d0e2dd;
+      --rule-thin: #3a544f;
+      --border-subtle: #1e332f;
+
+      --bg-squat: #d8e0da;
+      --bg-bench: #d9e1e6;
+      --bg-deadlift: #e5dbd4;
+      --bg-press: #e1dce4;
+      --bg-clean: #e0e2d7;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      min-height: 100vh;
+    }
+
+    .strength-page-body {
+      padding: 0 !important;
+    }
+
+    .font-serif-title { font-family: var(--font-serif); }
+    .font-mono-num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+    /* Custom Glass Panel Card */
+    .glass-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-soft);
+      border-radius: 8px;
+    }
+
+    /* Standard Three-Line Table Rules (学术标准三线表) */
+    table.academic-three-line {
+      width: 100%;
+      border-collapse: collapse;
+      /* Top Thick Rule: 3px */
+      border-top: 3px solid var(--rule-thick);
+      /* Bottom Thick Rule: 3px */
+      border-bottom: 3px solid var(--rule-thick);
+      font-variant-numeric: tabular-nums;
+    }
+
+    table.academic-three-line thead th {
+      /* Middle Rule: 1.5px below header */
+      border-bottom: 1.5px solid var(--rule-thin);
+      padding: 16px 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-main);
+      background-color: var(--bg-card);
+    }
+
+    table.academic-three-line tbody tr {
+      border-bottom: 1px dashed var(--border-subtle);
+      transition: background-color 0.15s ease;
+    }
+    table.academic-three-line tbody tr:last-child {
+      border-bottom: none;
+    }
+    table.academic-three-line tbody tr:hover {
+      background-color: var(--bg-subtle);
+    }
+
+    table.academic-three-line td, table.academic-three-line th {
+      padding: 16px 20px;
+      vertical-align: top;
+    }
+
+    /* Movement Badges */
+    .movement-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      transition: transform 0.15s ease;
+    }
+
+    .tag-squat { background: var(--bg-squat); color: var(--color-squat); }
+    .tag-bench { background: var(--bg-bench); color: var(--color-bench); }
+    .tag-deadlift { background: var(--bg-deadlift); color: var(--color-deadlift); }
+    .tag-press { background: var(--bg-press); color: var(--color-press); }
+    .tag-clean { background: var(--bg-clean); color: var(--color-clean); }
+
+    /* Interactive Filter Chips */
+    .filter-chip {
+      padding: 7px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      border-radius: 6px;
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-card);
+      color: #737875;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .filter-chip:hover {
+      color: var(--text-main);
+      border-color: var(--brand-primary);
+    }
+    .filter-chip.active {
+      background: var(--bg-hover);
+      color: #202422 !important;
+      border-color: var(--border-subtle);
+      box-shadow: none;
+    }
+
+    /* Toast Message */
+    .toast-msg {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--text-main);
+      color: var(--bg-page);
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(15, 36, 32, 0.12);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(12px);
+      transition: all 0.25s ease;
+      z-index: 100;
+    }
+    .toast-msg.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .strength-page-shell {
+      width: 100%;
+      min-height: 100vh;
+      padding: 10px 28px 28px;
+    }
+
+    .strength-page-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 66px;
+      padding: 0 0 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .strength-brand-block {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      gap: 9px;
+    }
+
+    .strength-brand-link {
+      display: inline-flex;
+      flex: 0 0 auto;
+      width: clamp(136px, 15vw, 184px);
+      align-items: center;
+    }
+
+    .strength-brand-link img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .strength-data-summary {
+      flex: 0 0 auto;
+      color: var(--text-light);
+      font-size: 15px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .strength-site-navigation,
+    .strength-filter-navigation {
+      display: inline-flex;
+      align-items: center;
+      gap: 1px;
+      padding: 3px;
+      border: 1px solid #ffffff;
+      border-radius: 999px;
+      background: #ffffff;
+      box-shadow: 0 8px 22px rgba(35, 52, 49, 0.08);
+    }
+
+    .strength-filter-navigation {
+      flex: 0 0 auto;
+      margin-left: auto;
+    }
+
+    .strength-header-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-left: auto;
+    }
+
+    .strength-nav-button,
+    .strength-filter-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 38px;
+      min-height: 38px;
+      min-width: 52px;
+      padding: 0 12px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      text-decoration: none;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: background 150ms ease, color 150ms ease;
+    }
+
+    .strength-nav-button:hover,
+    .strength-nav-button:focus-visible,
+    .strength-filter-chip:hover,
+    .strength-filter-chip:focus-visible {
+      color: var(--text-main);
+      background: rgba(29, 29, 31, 0.07);
+      outline: none;
+    }
+
+    .strength-nav-button.is-active,
+    .strength-filter-chip.active {
+      color: #202422 !important;
+      background: rgba(29, 29, 31, 0.1);
+      box-shadow: none;
+    }
+
+    .movement-tag {
+      color: #202422 !important;
+    }
+
+    .movement-tag * {
+      color: #202422 !important;
+    }
+
+    .strength-language-switch {
+      display: inline-flex;
+      align-items: center;
+      gap: 1px;
+      padding: 3px;
+      border: 1px solid #ffffff;
+      border-radius: 999px;
+      background: #ffffff;
+      box-shadow: 0 8px 22px rgba(35, 52, 49, 0.08);
+    }
+
+    .strength-language-button {
+      min-width: 32px;
+      height: 38px;
+      min-height: 38px;
+      padding: 0 8px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--text-light);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .strength-language-button.is-active,
+    .strength-language-button:hover,
+    .strength-language-button:focus-visible {
+      color: var(--text-main);
+      background: rgba(29, 29, 31, 0.1);
+      outline: none;
+    }
+
+    .legacy-strength-header,
+    .legacy-kpis,
+    .legacy-filter-control,
+    .legacy-table-caption {
+      display: none !important;
+    }
+
+    html.is-embedded-strength .strength-page-header,
+    body.is-embedded-strength .strength-page-header {
+      display: none !important;
+    }
+
+    body.is-embedded-strength .strength-page-shell {
+      padding: 0 0 24px;
+    }
+
+    body.is-embedded-strength .strength-table-shell {
+      margin-top: 0;
+    }
+
+    body.is-embedded-strength .strength-footnote {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .strength-table-shell {
+      margin-top: 18px;
+      overflow: hidden;
+    }
+
+    .strength-footnote {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      background: var(--bg-subtle);
+      color: var(--text-muted);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 760px) {
+      .strength-page-shell {
+        padding: 8px 10px 18px;
+      }
+
+      .strength-page-header {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .strength-brand-block {
+        width: 100%;
+        gap: 6px;
+      }
+
+      .strength-brand-link {
+        width: clamp(108px, 34vw, 136px);
+      }
+
+      .strength-data-summary {
+        font-size: 12px;
+      }
+
+      .strength-nav-button,
+      .strength-filter-chip,
+      .strength-source-button,
+      .strength-language-button {
+        height: 32px;
+        min-height: 32px;
+      }
+
+      .strength-site-navigation,
+      .strength-filter-navigation {
+        max-width: 100%;
+        overflow-x: auto;
+        scrollbar-width: none;
+      }
+
+      .strength-site-navigation::-webkit-scrollbar,
+      .strength-filter-navigation::-webkit-scrollbar {
+        display: none;
+      }
+
+      .strength-header-actions {
+        width: 100%;
+        margin-left: 0;
+        flex-wrap: wrap;
+      }
+
+      .strength-filter-navigation {
+        flex: 1 1 auto;
+        width: auto;
+        margin-left: 0;
+      }
+
+      .strength-filter-chip,
+      .strength-nav-button {
+        min-width: 44px;
+        padding-inline: 8px;
+        font-size: 11px;
+      }
+    }
+
+    .data-source-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: -18px 0 0;
+      padding: 8px 12px;
+      border: 1px solid var(--border-subtle);
+      border-top: 0;
+      border-radius: 0 0 10px 10px;
+      background: var(--bg-subtle);
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+    .data-source-status[data-state="error"] {
+      color: var(--brand-accent);
+    }
+
+    /* Shared WhatsUp surface: keep the existing table and filters, only align the visual language. */
+    :root {
+      --status-info-bg: #edf5f3;
+      --status-info-line: #c7ddd7;
+      --status-info-ink: #286b62;
+      --status-error-bg: #fff4ef;
+      --status-error-line: #efcdbd;
+      --status-error-ink: #a64b2c;
+    }
+
+    .strength-page-body {
+      background: var(--bg-page);
+    }
+
+    .strength-page-shell {
+      padding: 10px 28px 24px;
+    }
+
+    .strength-page-header {
+      min-height: 66px;
+      padding-bottom: 12px;
+      border-bottom-color: var(--border-subtle);
+    }
+
+    .strength-site-navigation,
+    .strength-filter-navigation,
+    .strength-language-switch {
+      border-color: #fff;
+      background: #fff;
+      box-shadow: 0 6px 18px rgba(31, 72, 65, 0.07);
+    }
+
+    .strength-nav-button,
+    .strength-filter-chip,
+    .strength-language-button {
+      height: 30px;
+      border-radius: 999px;
+      color: var(--text-muted);
+    }
+
+    .strength-nav-button:hover,
+    .strength-nav-button:focus-visible,
+    .strength-filter-chip:hover,
+    .strength-filter-chip:focus-visible,
+    .strength-language-button:hover,
+    .strength-language-button:focus-visible {
+      color: var(--text-main);
+      background: rgba(31, 116, 108, 0.07);
+      outline: none;
+    }
+
+    .strength-nav-button.is-active,
+    .strength-filter-chip.active,
+    .strength-language-button.is-active {
+      color: var(--text-main) !important;
+      background: rgba(31, 116, 108, 0.12);
+      box-shadow: none;
+    }
+
+    .strength-filter-chip.active {
+      border-color: transparent;
+    }
+
+    .strength-table-shell {
+      margin-top: 16px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      box-shadow: 0 8px 24px rgba(31, 72, 65, 0.05);
+    }
+
+    @media (min-width: 761px) {
+      .strength-page-shell {
+        padding-top: 4px;
+      }
+
+      .strength-page-header {
+        gap: 8px;
+        padding-top: 10px;
+      }
+    }
+
+    table.academic-three-line {
+      border-top-width: 2px;
+      border-bottom-width: 2px;
+      border-top-color: var(--rule-thick);
+      border-bottom-color: var(--rule-thick);
+    }
+
+    table.academic-three-line thead th {
+      padding: 12px 16px;
+      border-bottom-color: var(--rule-thin);
+      background: var(--bg-card);
+      letter-spacing: 0.04em;
+    }
+
+    table.academic-three-line tbody tr {
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    table.academic-three-line tbody tr:hover {
+      background: var(--bg-subtle);
+    }
+
+    table.academic-three-line td,
+    table.academic-three-line th {
+      padding: 12px 16px;
+    }
+
+    .movement-tag {
+      min-height: 26px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      box-shadow: none;
+    }
+
+    .strength-footnote {
+      padding: 10px 16px 12px;
+      background: var(--bg-subtle);
+      color: var(--text-muted);
+    }
+
+    .data-source-status {
+      position: fixed;
+      top: 12px;
+      right: 14px;
+      z-index: 30;
+      max-width: min(420px, calc(100vw - 28px));
+      min-height: 32px;
+      margin: 0;
+      padding: 7px 11px;
+      border: 1px solid var(--status-info-line);
+      border-radius: 6px;
+      background: var(--status-info-bg);
+      color: var(--status-info-ink);
+      font-size: 12px;
+      line-height: 1.45;
+      box-shadow: 0 6px 18px rgba(31, 72, 65, 0.08);
+    }
+
+    .data-source-status[data-state="error"] {
+      border-color: var(--status-error-line);
+      background: var(--status-error-bg);
+      color: var(--status-error-ink);
+    }
+
+    .data-source-status[hidden] {
+      display: none;
+    }
+
+    @media (max-width: 760px) {
+      .strength-page-shell {
+        padding: 8px 10px 18px;
+      }
+
+      .strength-table-shell {
+        margin-top: 12px;
+      }
+
+      table.academic-three-line td,
+      table.academic-three-line th {
+        padding: 10px 12px;
+      }
+
+      .data-source-status {
+        top: 8px;
+        right: 8px;
+        max-width: calc(100vw - 16px);
+      }
+    }
+
+    /* Print Styles */
+    @media print {
+      body { background: #fff !important; color: #000 !important; padding: 0 !important; }
+      .no-print { display: none !important; }
+      .glass-panel { box-shadow: none !important; border: none !important; }
+      table.academic-three-line { border-top-color: #000 !important; border-bottom-color: #000 !important; }
+      table.academic-three-line thead th { border-bottom-color: #000 !important; }
+    }
+  </style>
+  <link rel="stylesheet" href="/training/strength-page-overrides.css?v=3.0.16-20261029T125743519Z-9edf981cb254" />
+</head>
+<body class="strength-page-body">
+
+  <div class="strength-page-shell">
+
+    <!-- Top Header Bar -->
+    <header class="strength-page-header">
+      <div class="strength-brand-block">
+        <button class="strength-brand-link" type="button" data-strength-route="/" aria-label="返回总览">
+          <img src="/title-calligraphy.png?v=3.0.16-20261029T125743519Z-9edf981cb254" alt="量化·力量训练" />
+        </button>
+        <span class="strength-data-summary" id="strengthDataSummary">--</span>
+      </div>
+      <nav class="strength-site-navigation" aria-label="页面入口">
+        <button class="strength-nav-button" type="button" data-strength-route="/">总览</button>
+        <button class="strength-nav-button is-active" type="button" data-strength-route="/training/" aria-current="page">力训</button>
+        <button class="strength-nav-button" type="button" data-strength-route="/source-data/metrics">量化</button>
+        <button class="strength-nav-button" type="button" data-strength-route="/source-data/diet">饮食</button>
+      </nav>
+      <a class="strength-source-button" href="/健身计划.xlsx" download="健身计划.xlsx">↓ Excel</a>
+      <button class="strength-date-range-button" id="strengthDateRange" type="button" aria-label="当前日期范围">--</button>
+      <div class="strength-header-actions">
+        <nav class="strength-filter-navigation no-print" aria-label="动作筛选">
+          <button class="strength-filter-chip filter-chip active" type="button" data-filter="all" aria-pressed="true">全部动作</button>
+          <button class="strength-filter-chip filter-chip" type="button" data-filter="深蹲" aria-pressed="false">深蹲</button>
+          <button class="strength-filter-chip filter-chip" type="button" data-filter="卧推" aria-pressed="false">卧推</button>
+          <button class="strength-filter-chip filter-chip" type="button" data-filter="硬拉" aria-pressed="false">硬拉</button>
+          <button class="strength-filter-chip filter-chip" type="button" data-filter="推举" aria-pressed="false">推举</button>
+          <button class="strength-filter-chip filter-chip" type="button" data-filter="高翻" aria-pressed="false">高翻</button>
+          <button class="strength-filter-chip filter-chip" type="button" data-filter="自重反手引体向上" aria-pressed="false">自重反手</button>
+          <button class="strength-filter-chip filter-chip" type="button" data-filter="负重反手引体向上" aria-pressed="false">负重反手</button>
+        </nav>
+      </div>
+      <div class="strength-language-switch" id="strengthLanguageSwitch" role="group" aria-label="Language">
+        <button class="strength-language-button" type="button" data-strength-language="en" aria-pressed="false">EN</button>
+        <button class="strength-language-button is-active" type="button" data-strength-language="zh" aria-pressed="true">中</button>
+      </div>
+    </header>
+
+    <header class="legacy-strength-header flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-[var(--border-subtle)]">
+      <div>
+        <div class="flex items-center gap-3 mb-2">
+          <span class="px-2.5 py-0.5 rounded-md text-[11px] font-bold tracking-widest uppercase bg-[var(--brand-light)] text-[var(--brand-primary)]">
+            APA Academic Format
+          </span>
+          <span class="text-xs text-[var(--text-light)] font-mono-num" id="dateRangeLabel">等待 Excel 数据</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black font-serif-title tracking-tight text-[var(--text-main)]">
+          1 / 3 / 5 力量训练正式组
+        </h1>
+        <p class="mt-2 text-xs sm:text-sm text-[var(--text-muted)] max-w-2xl leading-relaxed">
+          渐进超载（Progressive Overload）训练定量监控 · 每周一、三、五正式组数据与含杠总重追踪
+        </p>
+      </div>
+
+    </header>
+    <div hidden class="data-source-status" id="dataSourceStatus" role="status" aria-live="polite"></div>
+
+    <!-- Metric Dashboard Row -->
+    <section class="legacy-kpis grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+
+      <!-- Metric Card 1 -->
+      <div class="glass-panel p-5 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-1.5 h-full bg-[var(--brand-primary)]"></div>
+        <div class="text-[11px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-1">训练总周数</div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl sm:text-4xl font-extrabold font-mono-num text-[var(--text-main)]" id="statWeeks">11</span>
+          <span class="text-xs font-semibold text-[var(--text-light)]" id="statWeeksSuffix">周</span>
+        </div>
+        <p class="mt-2 text-[11px] text-[var(--text-light)]" id="statWeeksDetail">等待 Excel 数据</p>
+      </div>
+
+      <!-- Metric Card 2 -->
+      <div class="glass-panel p-5 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-1.5 h-full bg-[var(--brand-accent)]"></div>
+        <div class="text-[11px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-1">累计做功容积 (Tonnage)</div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl sm:text-4xl font-extrabold font-mono-num text-[var(--text-main)]" id="statTonnage">--</span>
+          <span class="text-xs font-semibold text-[var(--text-light)]">吨</span>
+        </div>
+        <p class="mt-2 text-[11px] text-[var(--text-light)]">基于 [片重×2 + 20kg 杠重] 计算</p>
+      </div>
+
+      <!-- Metric Card 3 -->
+      <div class="glass-panel p-5 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-1.5 h-full bg-[var(--color-squat)]"></div>
+          <div class="text-[11px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-1">深蹲最高总重</div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl sm:text-4xl font-extrabold font-mono-num text-[var(--text-main)]" id="statSquatMax">--</span>
+          <span class="text-xs font-semibold text-[var(--text-light)]">kg</span>
+        </div>
+        <p class="mt-2 text-[11px] text-[var(--text-light)]" id="statSquatDetail">等待 Excel 数据</p>
+      </div>
+
+      <!-- Metric Card 4 -->
+      <div class="glass-panel p-5 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-1.5 h-full bg-[var(--color-deadlift)]"></div>
+          <div class="text-[11px] font-bold text-[var(--text-muted)] uppercase tracking-wider mb-1">硬拉最高总重</div>
+        <div class="flex items-baseline gap-2">
+          <span class="text-3xl sm:text-4xl font-extrabold font-mono-num text-[var(--text-main)]" id="statDeadliftMax">--</span>
+          <span class="text-xs font-semibold text-[var(--text-light)]">kg</span>
+        </div>
+        <p class="mt-2 text-[11px] text-[var(--text-light)]" id="statDeadliftDetail">等待 Excel 数据</p>
+      </div>
+
+    </section>
+
+    <!-- Control Bar: Movement Filters & Weight Mode Toggle -->
+    <section class="legacy-filter-control glass-panel p-4 flex flex-col md:flex-row items-stretch md:items-center justify-start gap-4 no-print">
+
+      <!-- Movement Filter Chips -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
+        <span class="text-xs font-bold text-[var(--text-muted)] mr-1 whitespace-nowrap flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5 text-[var(--brand-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+          动作筛选:
+        </span>
+        <button class="filter-chip active" data-filter="all">全部动作</button>
+        <button class="filter-chip" data-filter="深蹲">深蹲</button>
+        <button class="filter-chip" data-filter="卧推">卧推</button>
+        <button class="filter-chip" data-filter="硬拉">硬拉</button>
+        <button class="filter-chip" data-filter="推举">推举</button>
+        <button class="filter-chip" data-filter="高翻">高翻</button>
+        <button class="filter-chip" data-filter="自重反手引体向上">自重反手</button>
+        <button class="filter-chip" data-filter="负重反手引体向上">负重反手</button>
+      </div>
+
+    </section>
+
+    <div class="strength-footnote">
+      <span id="strengthFootnote"><span class="footnote-label">注1：</span>正式组=（最大单边片重×2+20kg杠铃杆）×次数×组数。<br><span class="footnote-label">注2：</span>自重反手=次数×次数×次数；负重反手=重量×次数×次数×次数。</span>
+    </div>
+
+    <!-- 学术标准三线表 (Academic Three-Line Table) -->
+    <main class="strength-table-shell glass-panel overflow-hidden">
+
+      <!-- Table Caption Header -->
+      <div class="legacy-table-caption px-6 py-4 bg-[var(--bg-subtle)] border-b border-[var(--border-subtle)] flex items-center justify-between">
+        <div class="text-xs font-bold text-[var(--text-muted)] uppercase tracking-wider flex items-center gap-2">
+          <svg class="w-4 h-4 text-[var(--brand-primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+          表 1：1/3/5 力量训练正式组安排与重量追踪明细表 (数据源：健身计划.xlsx)
+        </div>
+        <div class="text-xs text-[var(--text-light)] font-mono-num" id="displayedCount">
+          等待 Excel 数据
+        </div>
+      </div>
+
+      <!-- Scrollable Responsive Table Wrapper -->
+      <div class="overflow-x-auto">
+        <table class="academic-three-line">
+          <thead>
+            <tr>
+              <th class="w-44 text-left">训练周次 / 日期范围</th>
+              <th class="w-[28%] text-left">周一 (Day 1)</th>
+              <th class="w-[28%] text-left">周三 (Day 2)</th>
+              <th class="w-[28%] text-left">周五 (Day 3)</th>
+            </tr>
+          </thead>
+          <tbody id="tableBodyContent">
+            <!-- Dynamic Table Rows Injection -->
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+
+  </div>
+
+  <script>
+    let rawWorkoutDataset = [];
+    let selectedFilter = 'all';
+    let strengthLanguage = localStorage.getItem('whatsup.bio.language.v2') || 'zh';
+    let parentDataReceived = false;
+    let liveDataRequestStarted = false;
+    const strengthCopy = {
+      zh: {
+        title: '1 / 3 / 5 力量训练正式组',
+        overview: '总览',
+        training: '力训',
+        metrics: '量化',
+        diet: '饮食',
+        all: '全部',
+        monday: '周一',
+        wednesday: '周三',
+        friday: '周五',
+        week: '周',
+        records: (count) => `共 ${count} 条对应记录`,
+        empty: '无符合当前动作筛选的训练记录',
+        footnote: '<span class="footnote-label">注1：</span>正式组=（最大单边片重×2+20kg杠铃杆）×次数×组数。<br><span class="footnote-label">注2：</span>自重反手=次数×次数×次数；负重反手=重量×次数×次数×次数。',
+        movement: {
+          深蹲: '深蹲',
+          卧推: '卧推',
+          硬拉: '硬拉',
+          推举: '推举',
+          高翻: '高翻',
+          自重反手引体向上: '自重反手',
+          负重反手引体向上: '负重反手',
+        },
+      },
+      en: {
+        title: 'Strength Training',
+        overview: 'Overview',
+        training: 'Training',
+        metrics: 'Metrics',
+        diet: 'Diet',
+        all: 'All',
+        monday: 'Mon',
+        wednesday: 'Wed',
+        friday: 'Fri',
+        week: 'Week',
+        records: (count) => `${count} matching records`,
+        empty: 'No training records match this filter',
+        footnote: '<span class="footnote-label">Note 1:</span> formal set=(maximum plate per side x 2 + 20kg barbell) x reps x sets.<br><span class="footnote-label">Note 2:</span> bodyweight chin-up=reps x reps x reps; weighted chin-up=weight x reps x reps x reps.',
+        movement: {
+          深蹲: 'Squat',
+          卧推: 'Bench',
+          硬拉: 'Deadlift',
+          推举: 'Press',
+          高翻: 'Clean',
+          自重反手引体向上: 'Bodyweight Chin-up',
+          负重反手引体向上: 'Weighted Chin-up',
+        },
+      },
+    };
+    const strengthText = (key, ...args) => {
+      const value = strengthCopy[strengthLanguage][key];
+      return typeof value === 'function' ? value(...args) : value;
+    };
+
+    const formatNum = (num) => Number.isInteger(num) ? String(num) : num.toFixed(2).replace(/0+$/, '').replace(/\.$/, '');
+
+    const valueColor = (value, categoryOffset) => {
+      const numericValue = Math.abs(Number(value) || 0);
+      const hue = (numericValue * 137.508 + categoryOffset) % 360;
+      return `hsl(${hue.toFixed(1)} 48% 32%)`;
+    };
+    const actionColor = (movement, palette) => {
+      const movements = ['深蹲', '卧推', '硬拉', '推举', '高翻', '自重反手引体向上', '负重反手引体向上'];
+      const index = movements.indexOf(String(movement));
+      return palette[(index < 0 ? 0 : index) % palette.length];
+    };
+    const valuePalettes = {
+      weights: ['#A83220', '#155E9A', '#6B3FA0', '#13735C', '#9A5B00', '#9F3D69', '#34495E'],
+      reps: 24,
+      sets: 210,
+    };
+
+    const movementLabel = (movement) => strengthCopy[strengthLanguage].movement[movement] || movement;
+
+    const navigateStrengthRoute = (route) => {
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: 'fitness-route', route }, window.location.origin);
+        return;
+      }
+      window.location.assign(route);
+    };
+
+    document.querySelectorAll('[data-strength-route]').forEach((button) => {
+      button.addEventListener('click', () => navigateStrengthRoute(button.dataset.strengthRoute));
+    });
+
+    const getLocalIsoDate = () => {
+      const today = new Date();
+      return [
+        today.getFullYear(),
+        String(today.getMonth() + 1).padStart(2, '0'),
+        String(today.getDate()).padStart(2, '0'),
+      ].join('-');
+    };
+
+    const applyLiveData = (data) => {
+      const visibleDates = data.dates.filter((item) => item.date <= getLocalIsoDate());
+      const records = [];
+      visibleDates.forEach((date, index) => {
+        data.training.forEach((action) => {
+          const entry = action.values[index];
+          if (!entry) return;
+          const formalSet = action.kind === 'bodyweight'
+            ? { weight: 0, reps: entry.maxReps, sets: entry.setCount }
+            : entry.formalSet;
+          if (!formalSet) return;
+          records.push([
+            date.date,
+            action.label,
+            formalSet.weight,
+            formalSet.reps,
+            formalSet.sets,
+            entry.notes || [],
+            action.kind,
+            entry.repsBySet || [],
+          ]);
+        });
+      });
+      rawWorkoutDataset = records;
+      selectedFilter = 'all';
+      const firstDate = visibleDates[0]?.date || '';
+      const lastDate = visibleDates.at(-1)?.date || '';
+      document.getElementById('dateRangeLabel').textContent = firstDate && lastDate
+        ? `${firstDate} — ${lastDate}`
+        : '--';
+      document.getElementById('strengthDateRange').textContent = firstDate && lastDate
+        ? `${firstDate.slice(5).replace('-', '/')} — ${lastDate.slice(5).replace('-', '/')}`
+        : '--';
+      document.getElementById('strengthDataSummary').textContent = strengthLanguage === 'zh'
+        ? `${visibleDates.length}天`
+        : `${visibleDates.length} days`;
+      document.querySelectorAll('.filter-chip').forEach((chip) => {
+        const active = chip.getAttribute('data-filter') === 'all';
+        chip.classList.toggle('active', active);
+        chip.setAttribute('aria-pressed', String(active));
+      });
+      renderTable();
+    };
+
+    const loadLiveData = async () => {
+      if (parentDataReceived || liveDataRequestStarted) return;
+      liveDataRequestStarted = true;
+      const status = document.getElementById('dataSourceStatus');
+      const setDataStatus = (message, state = 'loading') => {
+        status.textContent = message;
+        status.dataset.state = state;
+        status.hidden = !message;
+      };
+      setDataStatus(strengthLanguage === 'zh' ? '正在加载数据…' : 'Loading data...');
+      try {
+        const response = await fetch(`/data.json?ts=${Date.now()}`, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        applyLiveData(await response.json());
+        setDataStatus('');
+      } catch (error) {
+        console.warn('[strength-three-line] live data load failed', error);
+        setDataStatus(
+          strengthLanguage === 'zh' ? '数据加载失败，请稍后刷新' : 'Data failed to load. Please refresh later.',
+          'error',
+        );
+        renderTable();
+      }
+    };
+
+    const getTagClass = (movement) => {
+      switch(movement) {
+        case '深蹲': return 'tag-squat';
+        case '卧推': return 'tag-bench';
+        case '硬拉': return 'tag-deadlift';
+        case '推举': return 'tag-press';
+        case '高翻': return 'tag-clean';
+        case '自重反手引体向上': return 'tag-bodyweight-chin';
+        case '负重反手引体向上': return 'tag-weighted-chin';
+        default: return '';
+      }
+    };
+
+    const getMondayDate = (dateStr) => {
+      const d = new Date(`${dateStr}T00:00:00Z`);
+      const day = d.getUTCDay();
+      const diff = day === 0 ? -6 : 1 - day;
+      d.setUTCDate(d.getUTCDate() + diff);
+      return d.toISOString().slice(0, 10);
+    };
+
+    const formatShortDate = (dateStr) => {
+      const [, m, d] = dateStr.split('-');
+      return `${Number(m)}/${Number(d)}`;
+    };
+
+    const formatWeekRange = (mondayStr) => {
+      const start = new Date(`${mondayStr}T00:00:00Z`);
+      const end = new Date(start);
+      end.setUTCDate(end.getUTCDate() + 4);
+      return `${formatShortDate(mondayStr)} -<br>${formatShortDate(end.toISOString().slice(0, 10))}`;
+    };
+
+    const renderTable = () => {
+      const byWeek = new Map();
+      let filteredRecordCount = 0;
+
+      rawWorkoutDataset.forEach((record) => {
+          const [date, movement, weight, reps, sets, notes = [], kind = "", repsBySet = []] = record;
+        if (selectedFilter !== 'all' && movement !== selectedFilter) return;
+        filteredRecordCount++;
+
+        const monday = getMondayDate(date);
+        if (!byWeek.has(monday)) byWeek.set(monday, new Map());
+        const weekMap = byWeek.get(monday);
+        if (!weekMap.has(date)) weekMap.set(date, []);
+          weekMap.get(date).push({ movement, weight, reps, sets, notes, kind, repsBySet });
+      });
+
+      document.getElementById('displayedCount').textContent = strengthText('records', filteredRecordCount);
+
+      const sortedWeeks = [...byWeek.entries()].sort(([a], [b]) => a.localeCompare(b));
+      document.getElementById('statWeeks').textContent = sortedWeeks.length;
+
+      const dayLabels = [strengthText('monday'), strengthText('wednesday'), strengthText('friday')];
+
+      const rowsHtml = sortedWeeks.map(([monday, weekMap], idx) => {
+        const dates = [0, 2, 4].map(offset => {
+          const d = new Date(`${monday}T00:00:00Z`);
+          d.setUTCDate(d.getUTCDate() + offset);
+          return d.toISOString().slice(0, 10);
+        });
+
+        const dayCells = dates.map((dateStr, dayIdx) => {
+          const entries = weekMap.get(dateStr) || [];
+          if (!entries.length) {
+            return `
+              <td>
+                <div class="text-[11px] font-bold text-[var(--brand-primary)] mb-2 pb-1 border-b border-[var(--border-subtle)] flex items-center justify-between">
+                  <span>${formatShortDate(dateStr)}</span>
+                  <span class="text-[10px] text-[var(--text-light)]">${dayLabels[dayIdx]}</span>
+                </div>
+              </td>
+            `;
+          }
+
+          const recordsList = entries.map(({ movement, weight, reps, sets, notes, kind, repsBySet }) => {
+            const noteMarkup = notes.length
+              ? `<div class="training-cell-notes">${notes.map((note) => String(note)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#39;")).join("<br>")}</div>`
+              : "";
+            const isBodyweightChinUp = movement === "自重反手引体向上" || kind === "bodyweight";
+            const isWeightedChinUp = movement === "负重反手引体向上" || kind === "weighted-chin-up";
+            const label = movementLabel(movement);
+            const displayLabel = isBodyweightChinUp && strengthLanguage === "zh"
+              ? '自重<span class="movement-mobile-break"><br></span>反手'
+              : label;
+            const valueParts = isBodyweightChinUp
+              ? (repsBySet.length ? repsBySet : [reps, reps, reps])
+              : isWeightedChinUp
+                ? [weight, reps, reps, reps]
+                : [weight, reps, sets];
+            const trainingValue = valueParts.map((value, valueIndex) => {
+              const valueClass = isBodyweightChinUp
+                ? "training-value-rep-by-set"
+                : valueIndex === 0 ? "training-value-weight"
+                  : valueIndex === 1 ? "training-value-rep"
+                    : isWeightedChinUp ? "training-value-rep" : "training-value-set";
+              const color = isBodyweightChinUp
+                ? valueColor(value, valuePalettes.reps)
+                : valueIndex === 0 ? actionColor(movement, valuePalettes.weights)
+                  : valueIndex === 1 ? valueColor(value, valuePalettes.reps)
+                    : isWeightedChinUp ? valueColor(value, valuePalettes.reps) : valueColor(value, valuePalettes.sets);
+              return `<span class="training-value-part ${valueClass}" style="--value-weight-color:${color};--value-rep-color:${color};--value-set-color:${color}">${formatNum(value)}</span>`;
+            }).join(isBodyweightChinUp ? '<span class="training-value-separator">,</span>' : '<span class="training-value-separator">×</span>');
+            return `
+              <div class="training-record">
+                <div class="movement-tag ${getTagClass(movement)} w-full justify-between my-1">
+                  <span class="font-bold">${displayLabel}</span>
+                  <span class="font-mono-num font-bold text-[12px] text-[var(--text-main)]">
+                    ${trainingValue}
+                  </span>
+                </div>
+                ${noteMarkup}
+              </div>
+            `;
+          }).join('');
+
+          return `
+            <td>
+              <div class="text-[11px] font-bold text-[var(--brand-primary)] mb-2 pb-1 border-b border-[var(--border-subtle)] flex items-center justify-between">
+                <span>${formatShortDate(dateStr)}</span>
+                <span class="text-[10px] text-[var(--text-light)]">${dayLabels[dayIdx]}</span>
+              </div>
+              <div class="space-y-1">
+                ${recordsList}
+              </div>
+            </td>
+          `;
+        }).join('');
+
+        return `
+          <tr>
+            <th scope="row">
+              <div class="flex flex-col">
+                <span class="training-week-label text-xs font-black text-[var(--brand-primary)] font-mono-num">${strengthLanguage === 'zh' ? `第${(idx + 1).toString().padStart(2, '0')}${strengthText('week')}` : `${strengthText('week')} ${String(idx + 1).padStart(2, '0')}`}</span>
+                <span class="week-range text-[11px] text-[var(--text-muted)] font-medium mt-0.5">${formatWeekRange(monday)}</span>
+              </div>
+            </th>
+            ${dayCells}
+          </tr>
+        `;
+      }).join('');
+
+      document.getElementById('tableBodyContent').innerHTML = rowsHtml || `
+        <tr>
+          <td colspan="4" class="text-center py-12 text-xs text-[var(--text-muted)]">${strengthText('empty')}</td>
+        </tr>
+      `;
+    };
+
+    const bindFilterChips = () => document.querySelectorAll('.filter-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        document.querySelectorAll('.filter-chip').forEach((c) => {
+          c.setAttribute('aria-pressed', String(c === chip));
+        });
+
+        selectedFilter = chip.getAttribute('data-filter');
+        renderTable();
+      });
+    });
+    bindFilterChips();
+
+    const syncStrengthLanguage = () => {
+      const copy = strengthCopy[strengthLanguage];
+      document.documentElement.lang = strengthLanguage === 'zh' ? 'zh-CN' : 'en';
+      document.documentElement.dataset.strengthLang = strengthLanguage;
+      document.title = copy.title;
+      document.querySelectorAll('.strength-site-navigation [data-strength-route]').forEach((link) => {
+        const route = link.dataset.strengthRoute;
+        link.textContent = route === '/' ? copy.overview
+          : route === '/training/' ? copy.training
+          : route === '/source-data/metrics' ? copy.metrics
+          : copy.diet;
+      });
+      document.querySelectorAll('.strength-filter-chip').forEach((chip) => {
+        chip.textContent = chip.dataset.filter === 'all' ? copy.all : movementLabel(chip.dataset.filter);
+      });
+      document.querySelectorAll('.academic-three-line thead th').forEach((heading, index) => {
+        if (index === 0) {
+          heading.textContent = strengthLanguage === 'zh' ? '训练周次 / 日期范围' : 'Training week / date range';
+          return;
+        }
+        heading.textContent = [
+          strengthLanguage === 'zh' ? '周一 (Day 1)' : 'Monday (Day 1)',
+          strengthLanguage === 'zh' ? '周三 (Day 2)' : 'Wednesday (Day 2)',
+          strengthLanguage === 'zh' ? '周五 (Day 3)' : 'Friday (Day 3)',
+        ][index - 1];
+      });
+      document.querySelectorAll('[data-strength-language]').forEach((button) => {
+        const active = button.dataset.strengthLanguage === strengthLanguage;
+        button.classList.toggle('is-active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+        document.getElementById('strengthFootnote').innerHTML = copy.footnote;
+        document.querySelectorAll('.filter-chip').forEach((chip) => {
+          chip.textContent = chip.dataset.filter === 'all' ? copy.all : movementLabel(chip.dataset.filter);
+        });
+      if (rawWorkoutDataset.length) renderTable();
+    };
+
+    document.querySelectorAll('[data-strength-language]').forEach((button) => {
+      button.addEventListener('click', () => {
+        strengthLanguage = button.dataset.strengthLanguage === 'zh' ? 'zh' : 'en';
+        localStorage.setItem('whatsup.bio.language.v2', strengthLanguage);
+        syncStrengthLanguage();
+      });
+    });
+
+    window.addEventListener('message', (event) => {
+      if (event.origin !== window.location.origin) return;
+      if (event.data?.type === 'fitness-training-data' && event.data.data) {
+        parentDataReceived = true;
+        applyLiveData(event.data.data);
+        return;
+      }
+      if (event.data?.type === 'fitness-training-filter') {
+        selectedFilter = event.data.filter || 'all';
+        document.querySelectorAll('.filter-chip').forEach((chip) => {
+          const active = chip.dataset.filter === selectedFilter;
+          chip.classList.toggle('active', active);
+          chip.setAttribute('aria-pressed', String(active));
+        });
+        renderTable();
+      }
+      if (event.data?.type === 'fitness-language') {
+        strengthLanguage = event.data.language === 'zh' ? 'zh' : 'en';
+        localStorage.setItem('whatsup.bio.language.v2', strengthLanguage);
+        syncStrengthLanguage();
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      if (new URLSearchParams(window.location.search).get('embedded') === '1') {
+        document.body.classList.add('is-embedded-strength');
+      }
+      syncStrengthLanguage();
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: 'fitness-training-ready' }, window.location.origin);
+        window.setTimeout(() => {
+          if (!parentDataReceived) loadLiveData();
+        }, 1500);
+      } else {
+        loadLiveData();
+      }
+    });
+  </script>
+</body>
+</html>

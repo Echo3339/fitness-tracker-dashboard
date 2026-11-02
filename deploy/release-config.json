@@ -1,0 +1,11 @@
+{
+  "appVersion": "3.0.16",
+  "bundleBuilder": {
+    "name": "esbuild",
+    "version": "0.25.5",
+    "entryPoint": "js/app.js",
+    "target": "es2022"
+  },
+  "manifestSchemaVersion": 1,
+  "dataSchemaVersion": 1
+}
